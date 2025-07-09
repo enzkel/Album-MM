@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Kenangan Kita</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Quicksand:wght@400;700&display=swap');
+
+    body {
+      margin: 0;
+      font-family: 'Quicksand', sans-serif;
+      background: linear-gradient(135deg, #ffc0cb, #ff69b4);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      min-height: 100vh;
+      overflow-x: hidden;
+      position: relative;
+    }
+
+    header {
+      font-size: 2.5rem;
+      font-weight: 700;
+      color: #3a1b00;
+      text-align: center;
+      margin: 2rem 0 1rem;
+    }
+
+    .cover {
+      text-align: center;
+      padding: 2rem;
+    }
+
+    .cover button {
+      padding: 0.8rem 1.5rem;
+      font-size: 1.2rem;
+      font-weight: bold;
+      color: white;
+      background-color: #e91e63;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: background 0.3s ease;
+    }
+
+    .cover button:hover {
+      background-color: #c2185b;
+    }
+
+    .album {
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      max-width: 100%;
+      animation: fadeIn 1s ease;
+    }
+
+    .slideshow-container {
+      position: relative;
+      width: 100%;
+      max-width: 90vw;
+      overflow: hidden;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      aspect-ratio: 4/3;
+    }
+
+    .slide {
+      position: absolute;
+      top: 0;
+      left: 100%;
+      width: 100%;
+      height: 100%;
+      opacity: 0;
+      transition: all 1s ease;
+      z-index: 0;
+    }
+
+    .slide.active {
+      left: 0;
+      opacity: 1;
+      z-index: 1;
+    }
+
+    .slide img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      border-radius: 20px;
+      box-shadow: 0 8px 20px rgba(255, 105, 180, 0.4);
+      display: block;
+    }
+
+    .nav {
+      margin-top: 1rem;
+    }
+
+    .prev, .next, .special {
+      cursor: pointer;
+      padding: 0.8rem 1.2rem;
+      margin: 0.5rem;
+      font-size: 1.2rem;
+      color: white;
+      background-color: #e91e63;
+      border: none;
+      border-radius: 10px;
+      transition: background 0.3s ease;
+    }
+
+    .prev:hover, .next:hover, .special:hover {
+      background-color: #c2185b;
+    }
+
+    .message {
+      margin-top: 1.5rem;
+      font-size: 1.2rem;
+      text-align: center;
+      color: #3a1b00;
+      padding: 0 1rem;
+    }
+
+    footer {
+      margin-top: 2rem;
+      color: #7e5109;
+      font-size: 0.9rem;
+      opacity: 0.8;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    .heart {
+      position: absolute;
+      width: 20px;
+      height: 20px;
+      background: red;
+      transform: rotate(45deg);
+      animation: float 8s linear infinite;
+      z-index: 0;
+    }
+
+    .heart::before,
+    .heart::after {
+      content: "";
+      position: absolute;
+      width: 20px;
+      height: 20px;
+      background: red;
+      border-radius: 50%;
+    }
+
+    .heart::before { top: -10px; left: 0; }
+    .heart::after { top: 0; left: -10px; }
+
+    @keyframes float {
+      0% { transform: translateY(0) rotate(45deg); opacity: 1; }
+      100% { transform: translateY(100vh) rotate(45deg); opacity: 0; }
+    }
+
+    .tap-heart {
+      position: absolute;
+      width: 30px;
+      height: 30px;
+      background: white;
+      transform: rotate(45deg);
+      pointer-events: none;
+      animation: pop 0.8s ease-out forwards;
+    }
+
+    .tap-heart::before,
+    .tap-heart::after {
+      content: "";
+      position: absolute;
+      width: 30px;
+      height: 30px;
+      background: white;
+      border-radius: 50%;
+    }
+
+    .tap-heart::before { top: -15px; left: 0; }
+    .tap-heart::after { top: 0; left: -15px; }
+
+    @keyframes pop {
+      0% { transform: scale(1) rotate(45deg); opacity: 1; }
+      100% { transform: scale(2) rotate(45deg); opacity: 0; }
+    }
+  </style>
+</head>
+<body>
+  <!-- Cover Page -->
+  <div class="cover" id="coverPage">
+    <header>Miracle & Mutiara</header>
+    <p>Buka Albumnya Yaww 💞!!</p>
+    <button onclick="bukaAlbum()">Buka Album</button>
+  </div>
+
+  <!-- Album Utama -->
+  <div class="album" id="albumPage">
+    <header>Album Me & You 🤎</header>
+    <div class="slideshow-container">
+      <div class="slide active"><img src="foto1.jpg" alt="Foto 1"></div>
+      <div class="slide"><img src="foto2.jpg" alt="Foto 2"></div>
+      <div class="slide"><img src="foto3.jpg" alt="Foto 3"></div>
+      <div class="slide"><img src="foto4.jpg" alt="Foto 4"></div>
+      <div class="slide"><img src="foto5.jpg" alt="Foto 5"></div>
+      <div class="slide"><img src="foto6.jpg" alt="Foto 6"></div>
+      <div class="slide"><img src="foto7.jpg" alt="Foto 7"></div>
+    </div>
+    <div class="nav">
+      <button class="prev" onclick="changeSlide(-1)">❮ Prev</button>
+      <button class="next" onclick="changeSlide(1)">Next ❯</button>
+      <button class="special" onclick="bukaKhusus()">Only For You 💖</button>
+    </div>
+    <div class="message">
+      Foto-foto yang banyak sekali kenangan for kita. Semoga ngana leh suka hehe
+    </div>
+    <footer>
+      Dari Miracle buat pacarku Mutiara 🤍
+    </footer>
+  </div>
+
+  <!-- Halaman Khusus -->
+  <div class="album" id="khususPage" style="display:none">
+    <header>Only For U 💞</header>
+    <div class="slideshow-container">
+      <div class="slide active"><img src="pacar1.jpg" alt="Pacar 1"></div>
+      <div class="slide"><img src="pacar2.jpg" alt="Pacar 2"></div>
+      <div class="slide"><img src="pacar3.jpg" alt="Pacar 3"></div>
+      <div class="slide"><img src="pacar4.jpg" alt="Pacar 4"></div>
+      <div class="slide"><img src="pacar5.jpg" alt="Pacar 5"></div>
+      <div class="slide"><img src="pacar6.jpg" alt="Pacar 6"></div>
+      <div class="slide"><img src="pacar7.jpg" alt="Pacar 7"></div>
+      <div class="slide"><img src="pacar8.jpg" alt="Pacar 8"></div>
+      <div class="slide"><img src="pacar9.jpg" alt="Pacar 9"></div>
+      <div class="slide"><img src="pacar10.jpg" alt="Pacar 10"></div>
+      <div class="slide"><img src="pacar11.jpg" alt="Pacar 11"></div>
+      <div class="slide"><img src="pacar12.jpg" alt="Pacar 12"></div>
+      <div class="slide"><img src="pacar13.jpg" alt="Pacar 13"></div>
+      <div class="slide"><img src="pacar14.jpg" alt="Pacar 14"></div>
+      <div class="slide"><img src="pacar15.jpg" alt="Pacar 15"></div>
+    </div>
+    <div class="nav">
+      <button class="prev" onclick="changeSlideKhusus(-1)">❮ Prev</button>
+      <button class="next" onclick="changeSlideKhusus(1)">Next ❯</button>
+      <button class="special" onclick="bukaAlbum()">Back to Album</button>
+    </div>
+    <div class="message">Disini dpe isi ngana p foto-foto yang kita suka sekali 💘</div>
+    <footer>Dari Mirayy yang mutiara sayangg. Jesus loves u so do i 🤍🤍</footer>
+  </div>
+
+  <!-- Musik -->
+  <audio id="bgMusic" autoplay loop>
+    <source src="ily.mp3" type="audio/mpeg" />
+  </audio>
+
+  <script>
+    function bukaAlbum() {
+      document.getElementById('coverPage').style.display = 'none';
+      document.getElementById('albumPage').style.display = 'flex';
+      document.getElementById('khususPage').style.display = 'none';
+    }
+
+    function bukaKhusus() {
+      document.getElementById('albumPage').style.display = 'none';
+      document.getElementById('khususPage').style.display = 'flex';
+    }
+
+    let currentSlide = 0;
+    const slides = document.querySelectorAll('#albumPage .slide');
+
+    function changeSlide(n) {
+      slides[currentSlide].classList.remove('active');
+      currentSlide = (currentSlide + n + slides.length) % slides.length;
+      slides[currentSlide].classList.add('active');
+    }
+
+    let currentKhusus = 0;
+    const khususSlides = document.querySelectorAll('#khususPage .slide');
+
+    function changeSlideKhusus(n) {
+      khususSlides[currentKhusus].classList.remove('active');
+      currentKhusus = (currentKhusus + n + khususSlides.length) % khususSlides.length;
+      khususSlides[currentKhusus].classList.add('active');
+    }
+
+    const music = document.getElementById('bgMusic');
+    document.addEventListener('DOMContentLoaded', () => {
+      music.volume = 0.5;
+      music.play().catch(() => {
+        document.body.addEventListener('click', () => {
+          music.play();
+        }, { once: true });
+      });
+    });
+
+    function createFallingHeart() {
+      const heart = document.createElement('div');
+      heart.className = 'heart';
+      heart.style.left = Math.random() * window.innerWidth + 'px';
+      heart.style.animationDuration = 5 + Math.random() * 5 + 's';
+      document.body.appendChild(heart);
+      setTimeout(() => heart.remove(), 10000);
+    }
+    setInterval(createFallingHeart, 400);
+
+    document.addEventListener('click', function (e) {
+      const heart = document.createElement('div');
+      heart.className = 'tap-heart';
+      heart.style.left = e.clientX - 15 + 'px';
+      heart.style.top = e.clientY - 15 + 'px';
+      document.body.appendChild(heart);
+      setTimeout(() => heart.remove(), 1000);
+    });
+  </script>
+</body>
+</html>
